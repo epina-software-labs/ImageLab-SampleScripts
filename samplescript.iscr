@@ -1,0 +1,80 @@
+program SampleScript1;
+
+(*************************************************************************)
+{
+  #AUTHOR Hans Lohninger, Epina GmbH
+  #VERSION 1.00
+  #CAPTION opens a data file and performs a few tranformations
+  #MINILABVERSION 1.83
+}
+(*************************************************************************)
+
+(*******************************************************************************
+
+    Anyone is free to copy, modify, publish, use, compile, sell, or
+    distribute this software, either in source code form or as a compiled
+    binary, for any purpose, commercial or non-commercial, and by any
+    means.
+
+    In jurisdictions that recognize copyright laws, the author or authors
+    of this software dedicate any and all copyright interest in the
+    software to the public domain. We make this dedication for the benefit
+    of the public at large and to the detriment of our heirs and
+    successors. We intend this dedication to be an overt act of
+    relinquishment in perpetuity of all present and future rights to this
+    software under copyright law.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+    OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+    ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+    OTHER DEALINGS IN THE SOFTWARE.
+
+*******************************************************************************)
+
+const
+  NSTEPS = 20;
+  TSLOT = 1;  
+
+var
+  i            : integer;
+  FName        : string;
+  SizeX        : integer;
+  SizeY        : integer;
+  SizeL        : integer;
+  Lay          : integer;
+  LLX, LLY     : double;
+  URX, URY     : double;
+  SclFX, SclFY : double;
+  Spectrum     : TDoubleArray;
+  ix, iy       : integer;
+
+begin
+FName := SelectFile (GetILabDir(idWork), '*.ilab', '');    // select the data file
+if FName <> '' then
+  begin
+  LoadILabFile (FName, false, true);     // load it
+  SizeX := GetCubeSize(dimX);            // get the dimensions of the data cube
+  SizeY := GetCubeSize(dimY);
+  SizeL := GetCubeSize(dimL);
+  Lay := SizeL div 2; 
+  DisplayImage(Lay,TSLOT,0,0,0,0,0,0,'');// display it showing the middle layer
+  LLX := IndexToWorld(dimX, 1);          // image corners in real-world coordinates
+  LLY := IndexToWorld(dimY, 1);          // lower left
+  URX := IndexToWorld(dimX, SizeX);      // upper right
+  URY := IndexToWorld(dimY, SizeY); 
+  SclFX := (URX-LLX)/NSTEPS/3;
+  SclFY := (URY-LLY)/NSTEPS/3;
+  MessageDlg ('File '+FName+' loaded. Next, the display will be zoomed', mtInformation, [mbOK]);
+  for i:=1 to NSTEPS do
+    begin
+    DisplayImage(Lay,1,LLX+SclFX*i,LLY+SclFY*i,URX-SclFX*i,URY-SclFY*i,0,0,'');
+    end;
+  MessageDlg ('Next, calculate the second derivative of all spectra', mtInformation, [mbOK]);
+  DeriveAllSpectra (1, SizeL, TSLOT, 2, 17, true);
+  end;
+end.
+
+

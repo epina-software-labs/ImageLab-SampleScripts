@@ -1,0 +1,80 @@
+program MatDiff;
+
+(*************************************************************************
+  #AUTHOR  Hans Lohninger, Epina GmbH
+  #VERSION 1.0
+  #PUBLISH private
+  #CAPTION numerical differentiation of spectra
+  #MINILABVERSION 1.82
+  #INSTALLBTN 2 matdiff.bmp finite difference of layers
+ *************************************************************************)
+
+(*******************************************************************************
+
+    Anyone is free to copy, modify, publish, use, compile, sell, or
+    distribute this software, either in source code form or as a compiled
+    binary, for any purpose, commercial or non-commercial, and by any
+    means.
+
+    In jurisdictions that recognize copyright laws, the author or authors
+    of this software dedicate any and all copyright interest in the
+    software to the public domain. We make this dedication for the benefit
+    of the public at large and to the detriment of our heirs and
+    successors. We intend this dedication to be an overt act of
+    relinquishment in perpetuity of all present and future rights to this
+    software under copyright law.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+    OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+    ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+    OTHER DEALINGS IN THE SOFTWARE.
+
+*******************************************************************************)
+
+var
+  sx, sy, sl    : integer;
+  i,j,k         : integer;
+  DlgResults     : TVariantArray;
+  mat1, mat2    : TDouble2DArray;
+  FirstLayer    : integer;
+  LastLayer     : integer;
+
+begin
+FuncMon(false);
+sx := GetCubeSize(dimX);
+sy := GetCubeSize(dimY);
+sl := GetCubeSize(dimL);
+ResizeMatrix (mat1, sx, sy);
+ResizeMatrix (mat2, sx, sy);
+CreateDialog (150,                                             // AlignAt,
+              20,                                              // TopPos
+              'Please specify the first and the last layer',   // DialogCaption
+              [gcNumIO, gcNumIO],                              // Components
+              ['first layer', 'last layer']);                  // Captions
+ConfigDlgComponent (1,'prec=0;val=1;low=1;high='+IntToStr(sl));
+ConfigDlgComponent (2,'prec=0;val='+IntToStr(sl)+';low=1;high='+IntToStr(sl));
+DlgResults := ShowDialog;
+if DlgResults[0] = 0 then
+  begin
+  FirstLayer := DlgResults[1];
+  LastLayer := DlgResults[2];
+  if (FirstLayer < 1) or (FirstLayer > sl) or
+     (LastLayer < 1) or (LastLayer > sl)
+    then MessageDlg('The specified range of layers is invalid, the dataset is not changed.', mtError, [mbOK])
+    else begin
+         for k:=FirstLayer to LastLayer-1 do
+           begin
+           ShowStatus ('', 100.0*k/sl);
+           CombineLayers(1,k+1,k,k,1.0,1.0,2);
+           end;
+         end;
+  end;
+FuncMon(true);
+end.
+
+
+end.
+
