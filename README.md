@@ -1,5 +1,5 @@
 ![ImageLab Logo](http://imagelab.at/img/imagelab_querbalken.png)
-# ImageLab-SampleScripts written in ILabPascal
+# ImageLab - Sample Scripts
 
 [Epina ImageLab](http://imagelab.at/) is a Windows-based multisensor imaging system for processing and analyzing hyperspectral images. It is a modular system consisting of a basic engine, a graphical user interface, and optional user-supplied modules. It supports all major spectroscopic imaging techniques, such as uv/vis, infrared, Raman, THz, optical emission and absorption, EDX (energy dispersive xray), and mass spectrometry.
 
