@@ -1,0 +1,53 @@
+#----------.gitignore--------------------------------------------------------------#
+#																				   #
+# in order to make the repository aware of changes within this file you have to do #
+#                                                                                  #
+# git add .gitignore                                                               #
+# git commit -m "<your commit message>"	                                           #
+#                                                                                  #
+#----------------------------------------------------------------------------------#
+
+
+
+# ignore all
+*
+
+# not .gitignore
+!.gitignore
+
+# not .gitattributes
+!.gitattributes
+
+# not .gitmodules
+!.gitmodules
+
+
+#----------------------------------------------------------------------------------#
+# list of files and folders, which are not ignored
+#----------------------------------------------------------------------------------#
+#
+# HINT: in order to not ignore files in subdirectories the subdirectory must be in
+# the list as well. If the subdirectory contains its own .gitignore file it
+# suffices to add it to the paths instead of redefining each exeption for this
+# subdirectory.
+# EXAMPLE:
+# !path
+# !path/to
+# !path/to/your
+# !path/to/your/files
+# !path/to/your/files/*.pas
+# !path/to/your/files/*.dfm
+# !path/to/your/files/*.dpr
+# !path/to/your/files/*.rc
+# !path/to/your/files/*.itl
+# !path/to/your/files/*.inc
+# or
+# !path
+# !path/to
+# !path/to/your
+# !path/to/your/files
+# !path/to/your/files/.gitignore
+
+!*.iscr
+!*.bmp
+!LICENSE.txt

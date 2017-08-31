@@ -1,0 +1,16 @@
+#----------.gitattributes----------------------------------------------------------#
+#                                                                                  #
+# in order to make the repository aware of changes within this file you have to do #
+#                                                                                  #
+# git add .gitattributes                                                           #
+# git commit -m "<your commit message>"	                                           #
+#                                                                                  #
+#----------------------------------------------------------------------------------#
+
+
+*.txt       text
+*.bmp       binary
+*.jpg       binary
+*.png       binary
+*.tiff      binary
+*.dcr       binary
